@@ -1,6 +1,6 @@
 # fast_location
 
-A new Flutter project.
+Aplicativo para busca de endereço a partir do CEP (Código de Endereçamento Postal Brasileiro).
 
 ## Getting Started
 

@@ -1,66 +1,46 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter/material.dart'; // Importa a biblioteca Material Design para widgets e temas
+import 'package:flutter/services.dart'; // Importa serviços para controlar a entrada de texto
+import 'package:fast_location/http/dio.dart'; // Importa biblioteca para fazer requisições HTTP
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends StatefulWidget { // Define um widget de página inicial com estado
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  final String title; // Título da página recebido como parâmetro
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState(); // Cria o estado da página
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  void onPressed_Localizar() {
-    showDialog(
+  void onPressed_Localizar() { // Função chamada ao pressionar o botão "Localizar Endereço"
+    showDialog( // Exibe um diálogo modal
       context: context,
-      builder: (BuildContext context) {
-        final cepController = TextEditingController();
-        return AlertDialog(
-          title: Text('Digite o CEP'),
-          content: TextField(
-            controller: cepController,
-            keyboardType: TextInputType.number,
-            inputFormatters: [
-              FilteringTextInputFormatter.digitsOnly,
+      builder: (BuildContext context) { // Constrói o conteúdo do diálogo
+        final cepController = TextEditingController(); // Controlador de texto para o campo de CEP
+        return AlertDialog( // Widget para o diálogo de alerta
+          title: Text('Digite o CEP'), // Título do diálogo
+          content: TextField( // Campo de texto para digitar o CEP
+            controller: cepController, // Vincula o controlador ao campo de texto
+            keyboardType: TextInputType.number, // Define o teclado numérico
+            inputFormatters: [ // Formatadores de entrada
+              FilteringTextInputFormatter.digitsOnly, // Permite apenas dígitos
             ],
           ),
-          actions: [
-            FilledButton(
-              onPressed: () async {
-                String cep = cepController.text;
-                String url = 'https://viacep.com.br/ws/$cep/json';
-
-                try {
-                  final dio = Dio(); // Create a Dio instance
-                  final response = await dio.get(url); // Make a GET request using Dio
-                  if (response.statusCode == 200) {
-                    // Process the successful response here
-                    Map<String, dynamic> data =
-                        response.data; // Access the JSON data directly
-                    // You can use the extracted data for further processing or display
-                    print(data); // For debugging purposes, print the response data
-                  } else {
-                    // Handle unsuccessful response (e.g., display error message)
-                    print('Error: ${response.statusCode}');
-                  }
-                } catch (error) {
-                  // Handle exceptions (e.g., network errors)
-                  print('Error: $error');
+          actions: [ // Botões de ação do diálogo
+            FilledButton( // Botão "Buscar"
+              onPressed: () async { // Função assíncrona para buscar o endereço
+                String cep = cepController.text; // Obtém o CEP digitado
+                final cepData = await CepLookup.getEnderecoPorCep(cep); // Busca o endereço usando o CEP
+                if (cepData != null) { // Verifica se a busca foi bem-sucedida
+                  // Processa os dados do endereço (cepData)
+                  print(cepData); // Exemplo: imprime os dados no console
+                } else {
+                  // Lida com erros (exibe mensagem de erro)
+                  print('Erro ao buscar o CEP');
                 }
-                Navigator.pop(context); // Close the modal after processing
+                Navigator.pop(context); // Fecha o diálogo modal
               },
-              child: Text('Buscar'),
+              child: Text('Buscar'), // Texto do botão
             ),
           ],
         );
@@ -68,55 +48,28 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void onPressed() {}
+  void onPressed() {} // Função vazia (provavelmente para o botão "Histórico")
 
   @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-          // TRY THIS: Try changing the color here to a specific color (to
-          // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-          // change color while the other colors stay the same.
-          //backgroundColor: Theme.of(context).colorScheme.primary,
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
-          ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-
-        child: Container(
-          color: Theme.of(context).colorScheme.background,
-          child: Column(
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-            //
-            // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-            // action in the IDE, or press "p" in the console), to see the
-            // wireframe for each widget.
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+  Widget build(BuildContext context) { // Constrói a interface da página
+    return Scaffold( // Estrutura básica da página
+      appBar: AppBar( // Barra superior da página
+        // Configuração da AppBar (título, cor, etc.)
+      ),
+      body: Center( // Centraliza o conteúdo da página
+        child: Container( // Container para organizar os elementos
+          color: Theme.of(context).colorScheme.background, // Cor de fundo
+          child: Column( // Coluna para organizar os elementos verticalmente
+            mainAxisAlignment: MainAxisAlignment.spaceAround, // Espaçamento entre elementos
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Row( // Linha para organizar o ícone e texto do título
+                mainAxisAlignment: MainAxisAlignment.center, // Centraliza os elementos horizontalmente
                 children: [
-                  Icon(Icons.swap_horiz,
-                      size: 50, color: Theme.of(context).colorScheme.primary),
-                  Text(
+                  Icon(Icons.swap_horiz, // Ícone de troca horizontal
+                      size: 50, color: Theme.of(context).colorScheme.primary), // Estilo do ícone
+                  Text( // Texto "Fast Location"
                     'Fast Location',
-                    style: TextStyle(
+                    style: TextStyle( // Estilo do texto
                         fontStyle: FontStyle.italic,
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
@@ -124,44 +77,43 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
-              Container(
-                color: Theme.of(context).colorScheme.surfaceVariant,
-                height: 200,
-                width: 350,
-                child: Column(
+              Container( // Container para o ícone e texto de instrução
+                color: Theme.of(context).colorScheme.surfaceVariant, // Cor de fundo
+                height: 200, // Altura do container
+                width: 350, // Largura do container
+                child: Column( // Coluna para organizar o ícone e texto
                   children: [
-                    Icon(
+                    Icon( // Ícone de direções
                       Icons.directions,
                       color: Theme.of(context).colorScheme.primary,
                       size: 100,
                     ),
-                    const Text(
+                    const Text( // Texto de instrução
                       'Faça uma busca para localizar seu destino',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
-              Spacer(),
-              SizedBox(
-                width: 350.0, // Define a largura do SizedBox
-                child: FilledButton(
-                  onPressed: onPressed_Localizar,
+              Spacer(), // Espaçador flexível
+              SizedBox( // Container com largura definida para o botão
+                width: 350.0,
+                child: FilledButton( // Botão "Localizar Endereço"
+                  onPressed: onPressed_Localizar, // Chama a função de busca
                   child: const Text('Localizar Endereço'),
                 ),
               ),
-              Spacer(),
-              SizedBox(
+              Spacer(), // Espaçador flexível
+              SizedBox( // Container com largura definida para o texto
                 width: 350.0,
-                child: Row(
+                child: Row( // Linha para o ícone e texto de endereços recentes
                   children: [
                     Icon(
                       Icons.location_pin,
                       color: Theme.of(context).colorScheme.primary,
                     ),
-                    Text('Últimos endereços localizados',
+                    Text('Últimos endereços localizados', // Texto de endereços recentes
                         style: TextStyle(
                             fontSize: 20,
                             color: Theme.of(context).colorScheme.primary,
@@ -169,8 +121,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-              Spacer(),
-              Container(
+              Spacer(), // Espaçador flexível
+              Container( // Container para a mensagem de "Não há locais recentes"
                 color: Colors.white,
                 height: 200,
                 width: 350,
@@ -181,31 +133,31 @@ class _MyHomePageState extends State<MyHomePage> {
                       color: Theme.of(context).colorScheme.primary,
                       size: 50,
                     ),
-                    Text("Não há locais recentes",
+                    Text("Não há locais recentes", // Mensagem de locais recentes
                         style: TextStyle(
                             fontSize: 26, fontWeight: FontWeight.bold)),
                   ],
                 ),
               ),
-              Spacer(),
-              SizedBox(
-                width: 350.0, // Define a largura do SizedBox
-                child: FilledButton(
-                  onPressed: onPressed,
+              Spacer(), // Espaçador flexível
+              SizedBox( // Container com largura definida para o botão
+                width: 350.0,
+                child: FilledButton( // Botão "Histórico de Endereços"
+                  onPressed: onPressed, // Chama a função onPressed (ainda vazia)
                   child: const Text('Histórico de Endereços'),
                 ),
               ),
-              Spacer(),
-              IconButton.filled(
-                onPressed: onPressed,
+              Spacer(), // Espaçador flexível
+              IconButton.filled( // Botão com ícone de bifurcação
+                onPressed: onPressed, // Chama a função onPressed (ainda vazia)
                 icon: Icon(Icons.fork_right),
                 iconSize: 50,
               ),
-              Spacer(),
+              Spacer(), // Espaçador flexível
             ],
           ),
         ),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }

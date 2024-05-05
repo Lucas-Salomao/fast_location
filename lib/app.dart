@@ -1,41 +1,32 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // Importa o pacote base do Flutter para criação de interfaces
 
-import 'modules/Home/page/home_page.dart';
+import 'modules/Home/page/home_page.dart'; // Importa a página inicial do aplicativo
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key}); // Construtor padrão
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState(); // Cria o estado da aplicação
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+  // Esta classe representa o estado do widget MyApp
+
+  // Este widget é a raiz da sua aplicação Flutter
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Fast Location',
+      debugShowCheckedModeBanner: false, // Oculta o banner de debug do Flutter
+      title: 'Fast Location', // Define o título do aplicativo
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green, brightness: Brightness.light),
-        useMaterial3: true,
+        // Define o tema visual da aplicação
+        colorScheme: ColorScheme.fromSeed( // Define o esquema de cores
+          seedColor: Colors.green, // Cor base do tema
+          brightness: Brightness.light, // Define o brilho do tema (claro)
+        ),
+        useMaterial3: true, // Habilita o Material Design 3
       ),
-      home: const MyHomePage(title: 'Fast Location'),
+      home: const MyHomePage(title: 'Fast Location'), // Define a página inicial
     );
   }
 }

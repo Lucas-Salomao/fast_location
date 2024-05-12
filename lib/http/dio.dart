@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart'; // Importa o pacote base do Flutter para criação de interfaces
 import 'package:dio/dio.dart';         // Importa o pacote Dio para realizar requisições HTTP
 
 class CepLookup {

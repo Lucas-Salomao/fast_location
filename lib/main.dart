@@ -1,6 +1,16 @@
-import 'package:fast_location/app.dart'; // Importa a classe principal do aplicativo "fast_location"
-import 'package:flutter/material.dart';  // Importa o pacote base do Flutter para criação de interfaces
+import 'package:fast_location/src/app.dart';
+import 'package:fast_location/src/shared/colors/change_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:fast_location/src/shared/storage/hive_configuration.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp()); // Inicia a aplicação executando o widget MyApp
+  WidgetsFlutterBinding.ensureInitialized();
+  HiveConfiguration.initHiveDatabase().then((_) {
+    const myApp = MyApp();
+    runApp(ChangeNotifierProvider(
+      create: (context) => ThemeModel(),
+      child: myApp,
+    ),);
+  });
 }

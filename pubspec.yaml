@@ -46,6 +46,7 @@ dependencies:
   path_provider_ios: ^2.0.9
   map_launcher: ^2.2.1+1
   geocoding: ^2.1.1
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

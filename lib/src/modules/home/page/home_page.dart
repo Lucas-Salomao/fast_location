@@ -10,8 +10,8 @@ import 'package:fast_location/src/shared/components/app_button.dart'; // Importa
 import 'package:fast_location/src/shared/components/app_loading.dart'; // Importa o componente de carregamento do app.
 import 'package:mobx/mobx.dart'; // Importa o MobX para gerenciamento de estado.
 import 'package:provider/provider.dart'; // Importa o Provider para gerenciamento de estado.
-
-import '../../../shared/colors/change_theme.dart'; // Importa o gerenciador de temas.
+import '../../../shared/colors/change_theme.dart'; // Importa o tamanho da barra de navegação
+import '../../../shared/metrics/app_metrics.dart'; // Importa o gerenciador de temas.
 
 class HomePage extends StatefulWidget { // Define a tela inicial como um widget com estado.
   const HomePage({super.key});
@@ -233,7 +233,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: BottomAppBar( // Define a barra de navegação inferior.
           shape: const CircularNotchedRectangle(), // Define o formato da barra de navegação.
           child: Container(
-            height: 50,
+            height: AppMetrics.barHeight,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround, // Distribui os elementos com espaçamento uniforme.
               children: [

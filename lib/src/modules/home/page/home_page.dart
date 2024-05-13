@@ -106,7 +106,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var _context = context; // Armazena o contexto atual.
     return Observer(builder: (_) { // Observa as mudanças no estado.
       return _controller.isLoading
           ? const AppLoading() // Exibe um indicador de carregamento enquanto os dados estão sendo carregados.

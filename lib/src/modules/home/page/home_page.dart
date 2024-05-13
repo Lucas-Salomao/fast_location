@@ -10,8 +10,10 @@ import 'package:fast_location/src/shared/components/app_button.dart'; // Importa
 import 'package:fast_location/src/shared/components/app_loading.dart'; // Importa o componente de carregamento do app.
 import 'package:mobx/mobx.dart'; // Importa o MobX para gerenciamento de estado.
 import 'package:provider/provider.dart'; // Importa o Provider para gerenciamento de estado.
+import '../../../shared/colors/app_colors.dart';
 import '../../../shared/colors/change_theme.dart'; // Importa o tamanho da barra de navegação
 import '../../../shared/metrics/app_metrics.dart'; // Importa o gerenciador de temas.
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 
 class HomePage extends StatefulWidget { // Define a tela inicial como um widget com estado.
   const HomePage({super.key});
@@ -101,6 +103,57 @@ class _HomePageState extends State<HomePage> {
           ),
         );
       },
+    );
+  }
+
+  ColorSwatch? _tempMainColor;
+  Color? _tempShadeColor;
+  ColorSwatch? _mainColor = Colors.blue;
+  Color? _shadeColor = Colors.blue[800];
+
+  void _openDialog(String title, Widget content) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(18.0),
+          title: Text(title),
+          content: content,
+          actions: [
+            TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text('CANCEL'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _mainColor = _tempMainColor;
+                  _shadeColor = _tempShadeColor;
+                  debugPrint(_mainColor.toString());
+                  // Atualize o esquema de cores do ThemeModel
+                  Provider.of<ThemeModel>(context, listen: false).colorScheme = ColorScheme.fromSeed(
+                    seedColor: _mainColor!, // Cor base do tema
+                    //brightness: Brightness.light, // Brilho claro
+                  );
+                });
+              },
+              child: const Text('SUBMIT'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _openFullMaterialColorPicker() async {
+    _openDialog(
+      "Full Material Color picker",
+      MaterialColorPicker(
+        colors: fullMaterialColors,
+        selectedColor: _mainColor,
+        onMainColorChange: (color) => setState(() => _tempMainColor = color),
+      ),
     );
   }
 
@@ -249,6 +302,10 @@ class _HomePageState extends State<HomePage> {
                         .setDarkTheme(); // Define o tema escuro.
                   },
                   icon: Icon(Icons.dark_mode), // Ícone de tema escuro.
+                ),
+                IconButton(
+                  onPressed: _openFullMaterialColorPicker,
+                  icon: Icon(Icons.color_lens), // Ícone de tema escuro.
                 ),
               ],
             ),

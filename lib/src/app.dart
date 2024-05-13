@@ -33,6 +33,51 @@ import 'package:provider/provider.dart';
 }*/
 
 // Classe principal do aplicativo
+// class MyApp extends StatelessWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     // Fornece o modelo de tema para todo o aplicativo
+//     return ChangeNotifierProvider(
+//       create: (context) => ThemeModel(), // Cria uma instância do modelo de tema
+//       child: Consumer<ThemeModel>( // Permite que widgets acessem o modelo de tema
+//         builder: (context, themeModel, child) {
+//           // Constrói o MaterialApp com o tema atual
+//           return MaterialApp(
+//             title: 'Fast Location', // Título do aplicativo
+//             // Tema claro
+//             theme: ThemeData(
+//               useMaterial3: false, // Desativa o Material Design 3
+//               colorScheme: ColorScheme.fromSeed( // Define o esquema de cores
+//                 seedColor: AppColors.appThemeColor, // Cor base do tema
+//                 brightness: Brightness.light, // Brilho claro
+//               ),
+//             ),
+//             // Tema escuro
+//             darkTheme: ThemeData(
+//               useMaterial3: false, // Desativa o Material Design 3
+//               colorScheme: ColorScheme.fromSeed( // Define o esquema de cores
+//                 seedColor: AppColors.appThemeColor, // Cor base do tema
+//                 brightness: Brightness.dark, // Brilho escuro
+//               ),
+//             ),
+//             themeMode: themeModel.currentTheme, // Define o modo de tema atual (claro/escuro)
+//             home: const InitialPage(), // Tela inicial do aplicativo
+//             debugShowCheckedModeBanner: false, // Oculta a faixa de modo de depuração
+//             // Rotas nomeadas para navegação
+//             routes: {
+//               AppRouter.home: (_) => const HomePage(), // Rota para a tela inicial
+//               AppRouter.history: (_) => const HistoryPage(), // Rota para a tela de histórico
+//             },
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+
+// Classe principal do aplicativo
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -49,18 +94,12 @@ class MyApp extends StatelessWidget {
             // Tema claro
             theme: ThemeData(
               useMaterial3: false, // Desativa o Material Design 3
-              colorScheme: ColorScheme.fromSeed( // Define o esquema de cores
-                seedColor: AppColors.appThemeColor, // Cor base do tema
-                brightness: Brightness.light, // Brilho claro
-              ),
+              colorScheme: themeModel.colorScheme, // Usa o esquema de cores do ThemeModel
             ),
             // Tema escuro
             darkTheme: ThemeData(
               useMaterial3: false, // Desativa o Material Design 3
-              colorScheme: ColorScheme.fromSeed( // Define o esquema de cores
-                seedColor: AppColors.appThemeColor, // Cor base do tema
-                brightness: Brightness.dark, // Brilho escuro
-              ),
+              colorScheme: themeModel.colorScheme.copyWith(brightness: Brightness.dark), // Usa o esquema de cores do ThemeModel com brilho escuro
             ),
             themeMode: themeModel.currentTheme, // Define o modo de tema atual (claro/escuro)
             home: const InitialPage(), // Tela inicial do aplicativo

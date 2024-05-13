@@ -1,3 +1,3 @@
 class AppMetrics {
-  static const double barHeight = 50;
+  static const double barHeight = 90;
 }
